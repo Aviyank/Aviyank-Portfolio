@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AI Services Dashboard - AI-Enhanced Portfolio{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-gradient">AI Services Dashboard</h1>
+            <p class="lead text-muted">Explore and interact with cutting-edge AI and machine learning services</p>
+        </div>
+    </div>
+
+    <!-- Services Overview -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Available Services</h2>
+        </div>
+        {% for service in services %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 ai-service-card">
+                <div class="card-body text-center">
+                    <div class="ai-icon mb-3">
+                        {% if service.service_type == 'sentiment' %}
+                            <i class="fas fa-brain fa-3x text-primary"></i>
+                        {% elif service.service_type == 'text_gen' %}
+                            <i class="fas fa-magic fa-3x text-success"></i>
+                        {% elif service.service_type == 'data_analysis' %}
+                            <i class="fas fa-chart-line fa-3x text-info"></i>
+                        {% else %}
+                            <i class="fas fa-robot fa-3x text-warning"></i>
+                        {% endif %}
+                    </div>
+                    <h5 class="card-title">{{ service.name }}</h5>
+                    <p class="card-text">{{ service.description }}</p>
+                    <span class="badge bg-primary">{{ service.get_service_type_display }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Interactive Demos -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Interactive Demos</h2>
+        </div>
+        
+        <!-- Sentiment Analysis Demo -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-brain me-2"></i>Sentiment Analysis</h5>
+                </div>
+                <div class="card-body">
+                    <form id="sentiment-form">
+                        <div class="mb-3">
+                            <label for="text-input" class="form-label">Enter text to analyze:</label>
+                            <textarea class="form-control" id="text-input" rows="4" placeholder="Enter your text here..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-2"></i>Analyze Sentiment
+                        </button>
+                    </form>
+                    
+                    <div id="sentiment-loading" style="display: none;" class="text-center mt-3">
+                        <div class="spinner mx-auto"></div>
+                        <p class="mt-2">Analyzing sentiment...</p>
+                    </div>
+                    
+                    <div id="sentiment-result" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text Generation Demo -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-magic me-2"></i>Text Generation</h5>
+                </div>
+                <div class="card-body">
+                    <form id="text-generation-form">
+                        <div class="mb-3">
+                            <label for="prompt-input" class="form-label">Enter a prompt:</label>
+                            <textarea class="form-control" id="prompt-input" rows="3" placeholder="Enter your prompt here..."></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="max-tokens" class="form-label">Max Tokens:</label>
+                                <input type="number" class="form-control" id="max-tokens" value="100" min="10" max="500">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="temperature" class="form-label">Temperature:</label>
+                                <input type="number" class="form-control" id="temperature" value="0.7" min="0" max="2" step="0.1">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">
+                            <i class="fas fa-magic me-2"></i>Generate Text
+                        </button>
+                    </form>
+                    
+                    <div id="text-generation-loading" style="display: none;" class="text-center mt-3">
+                        <div class="spinner mx-auto"></div>
+                        <p class="mt-2">Generating text...</p>
+                    </div>
+                    
+                    <div id="text-generation-result" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Analysis Demo -->
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Data Analysis</h5>
+                </div>
+                <div class="card-body">
+                    <form id="data-analysis-form">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="data-input" class="form-label">Enter JSON data:</label>
+                                <textarea class="form-control" id="data-input" rows="6" placeholder='[{"name": "John", "age": 30, "score": 85}, {"name": "Jane", "age": 25, "score": 92}]'></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="analysis-type" class="form-label">Analysis Type:</label>
+                                <select class="form-control" id="analysis-type">
+                                    <option value="descriptive">Descriptive Statistics</option>
+                                    <option value="correlation">Correlation Analysis</option>
+                                    <option value="trend">Trend Analysis</option>
+                                    <option value="clustering">Clustering Analysis</option>
+                                </select>
+                                <button type="submit" class="btn btn-info mt-3 w-100">
+                                    <i class="fas fa-chart-line me-2"></i>Analyze Data
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div id="data-analysis-loading" style="display: none;" class="text-center mt-3">
+                        <div class="spinner mx-auto"></div>
+                        <p class="mt-2">Analyzing data...</p>
+                    </div>
+                    
+                    <div id="data-analysis-result" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Usage Statistics -->
+    {% if usage_stats %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Usage Statistics</h2>
+        </div>
+        {% for stat in usage_stats %}
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="dashboard-card text-center">
+                <div class="stats-number">{{ stat.requests_count }}</div>
+                <div class="stats-label">{{ stat.service.name }}</div>
+                <div class="mt-2">
+                    <span class="badge bg-success">{{ stat.successful_requests }} successful</span>
+                    {% if stat.failed_requests > 0 %}
+                        <span class="badge bg-danger">{{ stat.failed_requests }} failed</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Recent Requests -->
+    {% if recent_requests %}
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Recent Requests</h2>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Processing Time</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in recent_requests %}
+                        <tr>
+                            <td>{{ request.service.name }}</td>
+                            <td>
+                                <span class="badge bg-{% if request.status == 'completed' %}success{% elif request.status == 'failed' %}danger{% else %}warning{% endif %}">
+                                    {{ request.get_status_display }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if request.processing_time %}
+                                    {{ request.processing_time|floatformat:2 }}s
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ request.created_at|date:"M d, Y H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialize AI services functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Add any additional JavaScript for the dashboard
+    console.log('AI Dashboard loaded');
+});
+</script>
+{% endblock %} 

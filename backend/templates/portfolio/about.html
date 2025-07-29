@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load portfolio_extras %}
+
+{% block title %}About - AI-Enhanced Portfolio{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <!-- About Header -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold text-gradient">About Me</h1>
+            <p class="lead text-muted">{{ profile.bio|default:"Passionate developer with expertise in AI/ML, web development, and innovative technologies." }}</p>
+        </div>
+    </div>
+
+    <!-- Profile Information -->
+    {% if profile %}
+    <div class="row mb-5">
+        <div class="col-lg-4 text-center mb-4">
+            <img src="{% static 'images/profile-picture.svg' %}" alt="Aviyank Aryan" class="img-fluid rounded-circle mb-3" style="width: 200px; height: 200px; object-fit: cover;">
+            <h3>{{ profile.user.get_full_name|default:profile.user.username }}</h3>
+            <p class="text-muted">{{ profile.title }}</p>
+            {% if profile.location %}
+                <p class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>{{ profile.location }}</p>
+            {% endif %}
+        </div>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Contact Information</h4>
+                    <div class="row">
+                        {% if profile.email %}
+                        <div class="col-md-6 mb-3">
+                            <strong><i class="fas fa-envelope me-2"></i>Email:</strong>
+                            <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+                        </div>
+                        {% endif %}
+                        {% if profile.phone %}
+                        <div class="col-md-6 mb-3">
+                            <strong><i class="fas fa-phone me-2"></i>Phone:</strong>
+                            <a href="tel:{{ profile.phone }}">{{ profile.phone }}</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="social-links mt-3">
+                        {% if profile.github_url %}
+                            <a href="{{ profile.github_url }}" class="btn btn-outline-dark me-2" target="_blank">
+                                <i class="fab fa-github me-2"></i>GitHub
+                            </a>
+                        {% endif %}
+                        {% if profile.linkedin_url %}
+                            <a href="{{ profile.linkedin_url }}" class="btn btn-outline-primary me-2" target="_blank">
+                                <i class="fab fa-linkedin me-2"></i>LinkedIn
+                            </a>
+                        {% endif %}
+                        {% if profile.twitter_url %}
+                            <a href="{{ profile.twitter_url }}" class="btn btn-outline-info me-2" target="_blank">
+                                <i class="fab fa-twitter me-2"></i>Twitter
+                            </a>
+                        {% endif %}
+                        {% if profile.website_url %}
+                            <a href="{{ profile.website_url }}" class="btn btn-outline-success" target="_blank">
+                                <i class="fas fa-globe me-2"></i>Website
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Experience Section -->
+    {% if experiences %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4"><i class="fas fa-briefcase me-2"></i>Work Experience</h2>
+            <div class="timeline">
+                {% for experience in experiences %}
+                <div class="timeline-item">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h5 class="card-title">{{ experience.title }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ experience.company }}</h6>
+                                    {% if experience.location %}
+                                        <p class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{ experience.location }}</p>
+                                    {% endif %}
+                                    <p class="card-text">{{ experience.description }}</p>
+                                    {% if experience.technologies_used.all %}
+                                        <div class="mb-2">
+                                            {% for tech in experience.technologies_used.all %}
+                                                <span class="badge bg-primary me-1">{{ tech.name }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-4 text-md-end">
+                                    <p class="text-muted">
+                                        {{ experience.start_date|date:"M Y" }} - 
+                                        {% if experience.current %}
+                                            Present
+                                        {% else %}
+                                            {{ experience.end_date|date:"M Y" }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Education Section -->
+    {% if education %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4"><i class="fas fa-graduation-cap me-2"></i>Education</h2>
+            <div class="row">
+                {% for edu in education %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ edu.degree }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ edu.institution }}</h6>
+                            {% if edu.location %}
+                                <p class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{ edu.location }}</p>
+                            {% endif %}
+                            <p class="card-text">{{ edu.description }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">
+                                    {{ edu.start_date|date:"M Y" }} - 
+                                    {% if edu.current %}
+                                        Present
+                                    {% else %}
+                                        {{ edu.end_date|date:"M Y" }}
+                                    {% endif %}
+                                </span>
+                                {% if edu.gpa %}
+                                    <span class="badge bg-success">GPA: {{ edu.gpa }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Research Highlights Section -->
+    {% if research_projects %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4"><i class="fas fa-flask me-2"></i>Research Highlights</h2>
+        </div>
+        {% for research in research_projects %}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-info">
+                <div class="card-body">
+                    <h5 class="card-title">{{ research.title }}</h5>
+                    <p class="card-text">{{ research.description|truncatewords:40 }}</p>
+                    <p class="mb-1"><strong>Authors:</strong> {{ research.authors }}</p>
+                    {% if research.publication %}
+                        <p class="mb-1"><strong>Publication:</strong> {{ research.publication }}</p>
+                    {% endif %}
+                    {% if research.date %}
+                        <p class="mb-1"><strong>Date:</strong> {{ research.date|date:"M Y" }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent">
+                    {% if research.link %}
+                        <a href="{{ research.link }}" class="btn btn-outline-info" target="_blank">
+                            View Paper / Project <i class="fas fa-external-link-alt ms-1"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Skills Section -->
+    {% if grouped_skills %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4"><i class="fas fa-code me-2"></i>Skills & Technologies</h2>
+            <div class="row">
+                {% for category, skills_list in grouped_skills.items %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-{{ category|lower }} me-2"></i>
+                                {{ skills_list.0.get_category_display }}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            {% for skill in skills_list %}
+                            <div class="skill-item mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="fw-medium">
+                                        {% if skill.icon %}
+                                            <i class="{{ skill.icon }} me-2"></i>
+                                        {% endif %}
+                                        {{ skill.name }}
+                                    </span>
+                                    <span class="text-muted">{{ skill.proficiency }}/10</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-primary" style="width: {{ skill.proficiency|multiply:10 }}%"></div>
+                                </div>
+                                {% if skill.description %}
+                                    <small class="text-muted">{{ skill.description }}</small>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Call to Action -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="card bg-gradient-primary text-white">
+                <div class="card-body py-5">
+                    <h3 class="mb-3">Let's Work Together!</h3>
+                    <p class="mb-4">I'm always interested in new opportunities and exciting projects.</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{% url 'projects' %}" class="btn btn-warning btn-lg">
+                            <i class="fas fa-project-diagram me-2"></i>View My Work
+                        </a>
+                        <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-envelope me-2"></i>Get In Touch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.timeline {
+    position: relative;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--primary-color);
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 50px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 20px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .timeline::before {
+        left: 15px;
+    }
+    
+    .timeline-item {
+        padding-left: 40px;
+    }
+    
+    .timeline-item::before {
+        left: 7px;
+    }
+}
+</style>
+{% endblock %} 

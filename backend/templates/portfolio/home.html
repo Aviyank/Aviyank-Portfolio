@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load portfolio_extras %}
+
+{% block title %}Home - AI-Enhanced Portfolio{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Hi, I'm <span class="text-warning">Aviyank Aryan</span>
+                </h1>
+                <h2 class="h3 mb-4 text-light">{{ profile.title }}</h2>
+                <p class="lead mb-4">{{ profile.bio|default:"Student at Indian Institute of Science Education and Research Kolkata(IISER-K), Majoring in Earth Science" }}</p>
+                <div class="social-links">
+                    <!-- GitHub -->
+                    <a href="https://github.com/Aviyank" class="text-white me-3" target="_blank">
+                        <i class="fab fa-github fa-2x"></i>
+                    </a>
+                    <!-- LinkedIn -->
+                    <a href="https://www.linkedin.com/in/aviyank-aryan/" class="text-white me-3" target="_blank">
+                        <i class="fab fa-linkedin fa-2x"></i>
+                    </a>
+                    {% if profile.twitter_url %}
+                        <a href="{{ profile.twitter_url }}" class="text-white me-3" target="_blank">
+                            <i class="fab fa-twitter fa-2x"></i>
+                        </a>
+                    {% endif %}
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/_aviyank_aryan/" class="text-white me-3" target="_blank">
+                        <i class="fab fa-instagram fa-2x"></i>
+                    </a>
+                    <!-- CricHeroes -->
+                    <a href="https://cricheroes.in/player-profile/16682100/Aviyank-Aryan" class="text-white me-3" target="_blank" title="CricHeroes">
+                        <i class="fas fa-cricket-ball fa-2x"></i>
+                    </a>
+                    <!-- Medium -->
+                    <a href="https://medium.com/@aviyank" class="text-white me-3" target="_blank">
+                        <i class="fab fa-medium fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="{% static 'images/profile-picture.svg' %}" alt="Aviyank Aryan" class="img-fluid rounded-circle hero-avatar">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Featured Projects</h2>
+                <p class="lead text-muted">Showcasing my best work and latest innovations</p>
+            </div>
+        </div>
+        <div class="row">
+            {% for project in featured_projects %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 project-card">
+                    {% if project.image %}
+                        <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                    {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="fas fa-project-diagram fa-3x text-muted"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.short_description|default:project.description|truncatewords:20 }}</p>
+                        <div class="mb-3">
+                            {% for tech in project.technologies.all|slice:":3" %}
+                                <span class="badge bg-primary me-1">{{ tech.name }}</span>
+                            {% endfor %}
+                            {% if project.technologies.count > 3 %}
+                                <span class="badge bg-secondary">+{{ project.technologies.count|add:"-3" }} more</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-{% if project.status == 'completed' %}success{% elif project.status == 'in_progress' %}warning{% else %}info{% endif %}">
+                                {{ project.get_status_display }}
+                            </span>
+                            <div>
+                                {% if project.github_url %}
+                                    <a href="{{ project.github_url }}" class="btn btn-sm btn-outline-dark" target="_blank">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                {% endif %}
+                                {% if project.live_url %}
+                                    <a href="{{ project.live_url }}" class="btn btn-sm btn-primary" target="_blank">
+                                        <i class="fas fa-external-link-alt"></i> Live
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- Research Projects as Featured -->
+            {% for research in research_projects %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 border-info project-card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-flask me-2 text-info"></i>{{ research.title }}</h5>
+                        <p class="card-text">{{ research.description|truncatewords:20 }}</p>
+                        <div class="mb-2">
+                            <span class="badge bg-info">Research</span>
+                            {% if research.publication %}
+                                <span class="badge bg-secondary">{{ research.publication }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Authors: {{ research.authors }}</small>
+                        </div>
+                        {% if research.date %}
+                            <small class="text-muted">{{ research.date|date:"M Y" }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        {% if research.link %}
+                            <a href="{{ research.link }}" class="btn btn-outline-info btn-sm" target="_blank">
+                                View Paper <i class="fas fa-external-link-alt ms-1"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+                            <a href="{% url 'projects' %}" class="btn btn-outline-primary btn-lg">
+                View All Projects <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Skills & Technologies</h2>
+                <p class="lead text-muted">Technologies I work with and my proficiency levels</p>
+            </div>
+        </div>
+        <div class="row">
+            {% for category, skills in grouped_skills.items %}
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-{{ category|lower }} me-2"></i>
+                            {{ skills.0.get_category_display }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for skill in skills %}
+                        <div class="skill-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="fw-medium">
+                                    {% if skill.icon %}
+                                        <i class="{{ skill.icon }} me-2"></i>
+                                    {% endif %}
+                                    {{ skill.name }}
+                                </span>
+                                <span class="text-muted">{{ skill.proficiency }}/10</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-primary" style="width: {{ skill.proficiency|multiply:10 }}%"></div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- AI Services Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">AI & Machine Learning</h2>
+                <p class="lead text-muted">Explore my AI-powered services and capabilities</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 text-center ai-service-card">
+                    <div class="card-body">
+                        <div class="ai-icon mb-3">
+                            <i class="fas fa-brain fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Sentiment Analysis</h5>
+                        <p class="card-text">Analyze text sentiment using advanced NLP techniques and machine learning models.</p>
+                        <a href="{% url 'ai_services:sentiment_demo' %}" class="btn btn-primary">
+                            Try Demo <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 text-center ai-service-card">
+                    <div class="card-body">
+                        <div class="ai-icon mb-3">
+                            <i class="fas fa-magic fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">Text Generation</h5>
+                        <p class="card-text">Generate creative and contextual text using state-of-the-art language models.</p>
+                        <a href="{% url 'ai_services:text_generation_demo' %}" class="btn btn-success">
+                            Try Demo <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 text-center ai-service-card">
+                    <div class="card-body">
+                        <div class="ai-icon mb-3">
+                            <i class="fas fa-chart-line fa-3x text-info"></i>
+                        </div>
+                        <h5 class="card-title">Data Analysis</h5>
+                        <p class="card-text">Comprehensive data analysis with automated insights and visualizations.</p>
+                        <a href="{% url 'ai_services:data_analysis_demo' %}" class="btn btn-info">
+                            Try Demo <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'ai_services:ai_dashboard' %}" class="btn btn-outline-primary btn-lg">
+                Explore All AI Services <i class="fas fa-robot ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Blog Posts Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Latest Blog Posts</h2>
+                <p class="lead text-muted">Thoughts, tutorials, and insights on technology and AI</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <a href="{% url 'blog' %}" class="btn btn-outline-primary btn-lg">
+                    Read Blog <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-avatar {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-avatar-placeholder {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.ai-service-card {
+    transition: transform 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ai-service-card:hover {
+    transform: translateY(-5px);
+}
+
+.ai-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.skill-item .progress {
+    background-color: #e9ecef;
+    border-radius: 10px;
+}
+
+.skill-item .progress-bar {
+    border-radius: 10px;
+    transition: width 1s ease;
+}
+
+.social-links a {
+    transition: transform 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: scale(1.1);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Home page loaded');
+});
+</script>
+{% endblock %} 

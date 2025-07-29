@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Projects - AI-Enhanced Portfolio{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-gradient">My Projects</h1>
+            <p class="lead text-muted">Showcasing my work, skills, and passion for technology</p>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="search" class="form-label">Search Projects</label>
+                            <input type="text" class="form-control" id="search" name="search" 
+                                   value="{{ search }}" placeholder="Search by title, description, or technology...">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="category" class="form-label">Technology Category</label>
+                            <select class="form-control" id="category" name="category">
+                                <option value="">All Categories</option>
+                                {% for skill in skills %}
+                                    {% if skill.category != previous_category %}
+                                        <option value="{{ skill.category }}" {% if category == skill.category %}selected{% endif %}>
+                                            {{ skill.get_category_display }}
+                                        </option>
+                                        {% with previous_category=skill.category %}{% endwith %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="status" class="form-label">Project Status</label>
+                            <select class="form-control" id="status" name="status">
+                                <option value="">All Status</option>
+                                <option value="completed" {% if status == 'completed' %}selected{% endif %}>Completed</option>
+                                <option value="in_progress" {% if status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                <option value="planned" {% if status == 'planned' %}selected{% endif %}>Planned</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-2"></i>Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Research Projects Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="display-6 fw-bold mb-4">Research Projects</h2>
+        </div>
+        {% for research in research_projects %}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-info">
+                <div class="card-body">
+                    <h5 class="card-title">{{ research.title }}</h5>
+                    <p class="card-text">{{ research.description|truncatewords:40 }}</p>
+                    <p class="mb-1"><strong>Authors:</strong> {{ research.authors }}</p>
+                    {% if research.publication %}
+                        <p class="mb-1"><strong>Publication:</strong> {{ research.publication }}</p>
+                    {% endif %}
+                    {% if research.date %}
+                        <p class="mb-1"><strong>Date:</strong> {{ research.date|date:"M Y" }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent">
+                    {% if research.link %}
+                        <a href="{{ research.link }}" class="btn btn-outline-info" target="_blank">
+                            View Paper / Project <i class="fas fa-external-link-alt ms-1"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <div class="py-4">
+                <i class="fas fa-flask fa-2x text-info mb-2"></i>
+                <h5 class="text-info">No research projects added yet.</h5>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="row">
+        {% for project in all_projects %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 project-card">
+                {% if project.source == 'local' and project.object.image %}
+                    <img src="{{ project.object.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-project-diagram fa-3x text-muted"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title">
+                            {{ project.title }}
+                            {% if project.source == 'github' %}
+                                <span class="badge bg-dark ms-2"><i class="fab fa-github"></i> GitHub</span>
+                            {% endif %}
+                        </h5>
+                        {% if project.source == 'local' %}
+                            <span class="badge bg-{% if project.object.status == 'completed' %}success{% elif project.object.status == 'in_progress' %}warning{% else %}info{% endif %}">
+                                {{ project.object.get_status_display }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <p class="card-text">{{ project.description|truncatewords:25 }}</p>
+                    <div class="mb-3">
+                        {% if project.source == 'local' %}
+                            {% for tech in project.object.technologies.all|slice:":3" %}
+                                <span class="badge bg-primary me-1">{{ tech.name }}</span>
+                            {% endfor %}
+                            {% if project.object.technologies.count > 3 %}
+                                <span class="badge bg-secondary">+{{ project.object.technologies.count|add:"-3" }} more</span>
+                            {% endif %}
+                        {% elif project.source == 'github' %}
+                            {% if project.language %}
+                                <span class="badge bg-primary me-1">{{ project.language }}</span>
+                            {% endif %}
+                            {% if project.stars %}
+                                <span class="badge bg-warning text-dark me-1"><i class="fas fa-star"></i> {{ project.stars }}</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            {% if project.source == 'local' %}
+                                {{ project.created_at|date:"M Y" }}
+                            {% elif project.source == 'github' and project.updated_at %}
+                                {{ project.updated_at|date:"M Y" }}
+                            {% endif %}
+                        </small>
+                        <div class="btn-group" role="group">
+                            {% if project.source == 'local' %}
+                                {% if project.object.github_url %}
+                                    <a href="{{ project.object.github_url }}" class="btn btn-sm btn-outline-dark" target="_blank" 
+                                       data-bs-toggle="tooltip" title="View on GitHub">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                {% endif %}
+                                {% if project.object.live_url %}
+                                    <a href="{{ project.object.live_url }}" class="btn btn-sm btn-primary" target="_blank"
+                                       data-bs-toggle="tooltip" title="Live Demo">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                {% endif %}
+                                <a href="{% url 'portfolio:project_detail' project.object.pk %}" class="btn btn-sm btn-outline-primary"
+                                   data-bs-toggle="tooltip" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            {% elif project.source == 'github' %}
+                                <a href="{{ project.url }}" class="btn btn-sm btn-outline-dark" target="_blank" 
+                                   data-bs-toggle="tooltip" title="View on GitHub">
+                                    <i class="fab fa-github"></i> Repo
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <div class="py-5">
+                <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No projects found</h4>
+                <p class="text-muted">
+                    {% if search or category or status %}
+                        Try adjusting your search criteria or filters.
+                    {% else %}
+                        No projects have been added yet. Check back soon!
+                    {% endif %}
+                </p>
+                {% if search or category or status %}
+                    <a href="{% url 'portfolio:projects' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-times me-2"></i>Clear Filters
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="Projects pagination">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1{% if search %}&search={{ search }}{% endif %}{% if category %}&category={{ category }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if category %}&category={{ category }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if search %}&search={{ search }}{% endif %}{% if category %}&category={{ category }}{% endif %}{% if status %}&status={{ status }}{% endif %}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if category %}&category={{ category }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search %}&search={{ search }}{% endif %}{% if category %}&category={{ category }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Call to Action -->
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <div class="card bg-gradient-primary text-white">
+                <div class="card-body py-5">
+                    <h3 class="mb-3">Interested in working together?</h3>
+                    <p class="mb-4">I'm always open to discussing new opportunities and exciting projects.</p>
+                    <a href="{% url 'contact' %}" class="btn btn-warning btn-lg">
+                        <i class="fas fa-envelope me-2"></i>Get In Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Auto-submit form on select change
+    document.getElementById('category').addEventListener('change', function() {
+        this.form.submit();
+    });
+    
+    document.getElementById('status').addEventListener('change', function() {
+        this.form.submit();
+    });
+});
+</script>
+{% endblock %} 
