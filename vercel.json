@@ -1,11 +1,9 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "backend/wsgi.py",
-      "use": "@vercel/python"
-    }
-  ],
+  "buildCommand": "pip install -r requirements.txt && cd backend && python manage.py collectstatic --noinput",
+  "outputDirectory": "backend",
+  "installCommand": "pip install -r requirements.txt",
+  "framework": null,
   "routes": [
     {
       "src": "/static/(.*)",
@@ -17,10 +15,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "backend/wsgi.py"
+      "dest": "api/index.py"
     }
-  ],
-  "env": {
-    "PYTHON_VERSION": "3.11"
-  }
+  ]
 }
