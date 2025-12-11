@@ -10,7 +10,7 @@ from decouple import config
 DEBUG = False
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-production')
 
 # Update allowed hosts for production
 ALLOWED_HOSTS = [
