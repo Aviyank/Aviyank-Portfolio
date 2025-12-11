@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.py",
+      "src": "backend/wsgi.py",
       "use": "@vercel/python"
     }
   ],
@@ -17,11 +17,10 @@
     },
     {
       "src": "/(.*)",
-      "dest": "api/index.py"
+      "dest": "backend/wsgi.py"
     }
   ],
   "env": {
     "PYTHON_VERSION": "3.11"
   }
 }
-
