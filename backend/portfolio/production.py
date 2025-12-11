@@ -21,6 +21,7 @@ ALLOWED_HOSTS = [
     '.up.railway.app',  # Railway subdomain format
     '*',  # Allow all hosts during initial deployment
     '.vercel.app',   # Vercel domain
+    '.vercel.sh',    # Vercel preview domains
     '.herokuapp.com', # Heroku domain
     '.render.com',   # Render domain
     '.koyeb.app',    # Koyeb domain
