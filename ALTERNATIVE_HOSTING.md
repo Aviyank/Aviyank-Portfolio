@@ -158,17 +158,24 @@ Since you want alternatives to Railway, here are the best **FREE** hosting platf
 
 ## 🎯 Option 5: Koyeb
 
-**Why Koyeb?**
-- ✅ **Simple deployment**
-- ✅ Global edge network
-- ✅ PostgreSQL included
-- ✅ Auto-scaling
+**⚠️ Important: Koyeb Pricing**
 
-### Quick Deploy Steps:
+**Hobby Plan (Free, No Credit Card):**
+- ✅ 1 web service, 512MB RAM, 2GB storage
+- ❌ **No PostgreSQL database included**
+
+**Starter Plan (Free Services, But Requires Credit Card):**
+- ✅ 1 free web service + 1 free database
+- ⚠️ **Requires payment method** (pay-per-use model)
+
+**Note:** For truly free hosting with database, use **Render** or **Railway** instead.
+
+### Quick Deploy Steps (If Using Starter Plan):
 
 1. **Sign Up:**
    - Go to [koyeb.com](https://www.koyeb.com)
    - Sign up with GitHub
+   - **Note:** Starter plan requires credit card
 
 2. **Create App:**
    - Click **"Create App"**
@@ -180,10 +187,10 @@ Since you want alternatives to Railway, here are the best **FREE** hosting platf
    - Run Command: `cd backend && gunicorn portfolio.wsgi:application`
 
 4. **Add Database:**
-   - Add PostgreSQL service
+   - Add PostgreSQL service (free on Starter plan)
    - Link to your app
 
-**Free Tier:** 2 services, 256MB RAM per service
+**Free Tier:** Hobby = 1 service (no DB), Starter = 1 service + 1 DB (requires credit card)
 
 ---
 
@@ -229,9 +236,11 @@ Since you want alternatives to Railway, here are the best **FREE** hosting platf
 
 **For your Django portfolio, I recommend:**
 
-1. **Render** - Best free tier (750 hours), easy setup, PostgreSQL included
-2. **Fly.io** - If you want global edge network and more control
-3. **PythonAnywhere** - If you're a beginner and want a simple interface
+1. **Render** - Best free tier (750 hours), easy setup, PostgreSQL included, **NO CREDIT CARD**
+2. **Railway** - Good alternative (500 hours), 1GB RAM, PostgreSQL included, **NO CREDIT CARD**
+3. **Fly.io** - If you want global edge network and more control, **NO CREDIT CARD**
+
+**Avoid Koyeb** if you want truly free hosting - it requires a credit card for database access.
 
 ---
 

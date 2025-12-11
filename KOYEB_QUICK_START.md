@@ -1,6 +1,20 @@
 # ⚡ Koyeb Quick Start - 5 Minutes to Deploy
 
-## 🎯 Super Quick Steps
+## ⚠️ Important: Koyeb Pricing
+
+**Hobby Plan (Free, No Credit Card):**
+- 1 web service, 512MB RAM, 2GB storage
+- ❌ **No database included**
+
+**Starter Plan (Free Services, But Requires Credit Card):**
+- 1 free web service + 1 free database
+- ⚠️ **Requires payment method**
+
+**💡 Recommendation:** For truly free hosting with database, use **Render** or **Railway** instead (see `ALTERNATIVE_HOSTING.md`).
+
+---
+
+## 🎯 Super Quick Steps (If You Still Want to Use Koyeb)
 
 ### 1. Sign Up
 - Go to [koyeb.com](https://www.koyeb.com)

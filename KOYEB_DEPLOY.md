@@ -6,11 +6,25 @@ Complete guide to deploy your Django portfolio on **Koyeb** for FREE!
 
 - ✅ **Simple deployment** process
 - ✅ **Global edge network** for fast performance
-- ✅ **PostgreSQL database** included
 - ✅ **Auto-scaling** capabilities
-- ✅ **2 free services** (web app + database)
-- ✅ **256MB RAM** per service
 - ✅ **Automatic HTTPS** (SSL certificates)
+
+## ⚠️ Important: Koyeb Pricing
+
+**Hobby Plan (Free, No Credit Card):**
+- ✅ 1 web service
+- ✅ 512MB RAM
+- ✅ 2GB SSD storage
+- ❌ **No PostgreSQL database included** (would need external DB)
+- ❌ Limited features
+
+**Starter Plan (Free Services, But Requires Credit Card):**
+- ✅ 1 free web service
+- ✅ 1 free database
+- ⚠️ **Requires payment method** (pay-per-use for additional resources)
+- ⚠️ Charges apply if you exceed free tier limits
+
+**Note:** For a truly free Django deployment with database, consider **Render** or **Railway** instead (see alternatives below).
 
 ---
 
@@ -165,13 +179,29 @@ However, for Django apps, the manual configuration above is simpler.
 
 ## 📊 Koyeb Free Tier Limits
 
-- ✅ **2 services** (web app + database)
-- ✅ **256MB RAM** per service
-- ✅ **PostgreSQL database** included
+### Hobby Plan (No Credit Card Required)
+- ✅ **1 web service**
+- ✅ **512MB RAM**
+- ✅ **2GB SSD storage**
+- ❌ **No database included** (would need external database service)
 - ✅ **Automatic HTTPS**
 - ✅ **Global edge network**
-- ✅ **Custom domains** supported
-- ⚠️ **Note:** Free tier may have usage limits
+
+### Starter Plan (Requires Credit Card)
+- ✅ **1 free web service**
+- ✅ **1 free database**
+- ⚠️ **Payment method required** (charges apply for additional usage)
+- ⚠️ **Pay-per-use** model beyond free tier
+
+## 💡 Better Free Alternatives
+
+If you want a **truly free** Django deployment with database (no credit card):
+
+1. **Render** - 750 hours/month, PostgreSQL included, no credit card
+2. **Railway** - 500 hours/month, PostgreSQL included, no credit card  
+3. **Fly.io** - 3 shared VMs, PostgreSQL available, no credit card
+
+See `ALTERNATIVE_HOSTING.md` for details on these platforms.
 
 ---
 
