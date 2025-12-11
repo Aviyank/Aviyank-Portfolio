@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "pip install -r requirements.txt && cd backend && python manage.py collectstatic --noinput",
+  "buildCommand": "pip install -r requirements.txt && cd backend && DJANGO_SETTINGS_MODULE=portfolio.settings python manage.py collectstatic --noinput || true",
   "outputDirectory": "backend",
   "installCommand": "pip install -r requirements.txt",
   "framework": null,
