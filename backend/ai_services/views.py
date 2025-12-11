@@ -242,6 +242,14 @@ def data_analysis_history_api(request):
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def models_api(request):
+    """API endpoint for models."""
+    data = {"message": "This is the /v1/models endpoint.", "version": "1.0"}
+    return Response(data, status=status.HTTP_200_OK)
+
+
 # Demo views for frontend
 def sentiment_demo(request):
     """Demo page for sentiment analysis."""
@@ -266,4 +274,4 @@ def ai_dashboard(request):
         'usage_stats': manager.get_service_usage_stats(request.user if request.user.is_authenticated else None, days=7),
         'recent_requests': manager.get_recent_requests(request.user if request.user.is_authenticated else None, limit=10),
     }
-    return render(request, 'ai_services/ai_dashboard.html', context) 
+    return render(request, 'ai_services/ai_dashboard.html', context)

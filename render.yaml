@@ -1,0 +1,28 @@
+# Render deployment configuration
+services:
+  # A Django web service
+  - type: web
+    name: django-portfolio
+    env: python
+    buildCommand: chmod +x ./build.sh && ./build.sh
+    startCommand: cd backend && gunicorn portfolio.wsgi
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: .onrender.com,localhost,127.0.0.1
+      - key: PYTHON_VERSION
+        value: 3.11.7
+      - key: DATABASE_URL
+        fromDatabase:
+          name: django-portfolio-db
+          property: connectionString
+
+# A PostgreSQL database
+databases:
+  - name: django-portfolio-db
+    databaseName: django_portfolio
+    user: django_portfolio_user
+    plan: free

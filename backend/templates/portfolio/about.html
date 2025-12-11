@@ -10,7 +10,21 @@
     <div class="row mb-5">
         <div class="col-lg-8 mx-auto text-center">
             <h1 class="display-4 fw-bold text-gradient">About Me</h1>
-            <p class="lead text-muted">{{ profile.bio|default:"Passionate developer with expertise in AI/ML, web development, and innovative technologies." }}</p>
+            {% if profile.bio %}
+            <p class="lead text-muted">{{ profile.bio }}</p>
+            {% else %}
+            <div class="lead text-muted">
+                <p class="mb-2">
+                    <i class="fas fa-university me-2 text-primary"></i>
+                    Student at <strong>Indian Institute of Science Education and Research Kolkata</strong> <span
+                        class="text-muted">(IISER-K)</span>
+                </p>
+                <p class="mb-0">
+                    <i class="fas fa-graduation-cap me-2 text-primary"></i>
+                    Majoring in <strong>Earth Science</strong>
+                </p>
+            </div>
+            {% endif %}
         </div>
     </div>
 
@@ -18,11 +32,22 @@
     {% if profile %}
     <div class="row mb-5">
         <div class="col-lg-4 text-center mb-4">
-            <img src="{% static 'images/profile-picture.svg' %}" alt="Aviyank Aryan" class="img-fluid rounded-circle mb-3" style="width: 200px; height: 200px; object-fit: cover;">
+            <!-- DEBUG: Avatar URL is {{ profile.avatar.url }} -->
+            {% if profile.avatar and profile.avatar.url %}
+            {% static 'images/profile-picture.svg' as fallback_image %}
+            <img src="{{ profile.avatar.url }}"
+                alt="Profile picture of {{ profile.user.get_full_name|default:profile.user.username }}"
+                class="img-fluid rounded-circle mb-3 profile-avatar" loading="lazy" role="img"
+                onerror="this.onerror=null;this.src='{{ fallback_image }}';">
+            {% else %}
+            <img src="{% static 'images/profile-picture.svg' %}"
+                alt="Default profile picture for {{ profile.user.get_full_name|default:profile.user.username }}"
+                class="img-fluid rounded-circle mb-3 profile-avatar" loading="lazy" role="img">
+            {% endif %}
             <h3>{{ profile.user.get_full_name|default:profile.user.username }}</h3>
             <p class="text-muted">{{ profile.title }}</p>
             {% if profile.location %}
-                <p class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>{{ profile.location }}</p>
+            <p class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>{{ profile.location }}</p>
             {% endif %}
         </div>
         <div class="col-lg-8">
@@ -45,24 +70,24 @@
                     </div>
                     <div class="social-links mt-3">
                         {% if profile.github_url %}
-                            <a href="{{ profile.github_url }}" class="btn btn-outline-dark me-2" target="_blank">
-                                <i class="fab fa-github me-2"></i>GitHub
-                            </a>
+                        <a href="{{ profile.github_url }}" class="btn btn-outline-dark me-2" target="_blank">
+                            <i class="fab fa-github me-2"></i>GitHub
+                        </a>
                         {% endif %}
                         {% if profile.linkedin_url %}
-                            <a href="{{ profile.linkedin_url }}" class="btn btn-outline-primary me-2" target="_blank">
-                                <i class="fab fa-linkedin me-2"></i>LinkedIn
-                            </a>
+                        <a href="{{ profile.linkedin_url }}" class="btn btn-outline-primary me-2" target="_blank">
+                            <i class="fab fa-linkedin me-2"></i>LinkedIn
+                        </a>
                         {% endif %}
                         {% if profile.twitter_url %}
-                            <a href="{{ profile.twitter_url }}" class="btn btn-outline-info me-2" target="_blank">
-                                <i class="fab fa-twitter me-2"></i>Twitter
-                            </a>
+                        <a href="{{ profile.twitter_url }}" class="btn btn-outline-info me-2" target="_blank">
+                            <i class="fab fa-twitter me-2"></i>Twitter
+                        </a>
                         {% endif %}
                         {% if profile.website_url %}
-                            <a href="{{ profile.website_url }}" class="btn btn-outline-success" target="_blank">
-                                <i class="fas fa-globe me-2"></i>Website
-                            </a>
+                        <a href="{{ profile.website_url }}" class="btn btn-outline-success" target="_blank">
+                            <i class="fas fa-globe me-2"></i>Website
+                        </a>
                         {% endif %}
                     </div>
                 </div>
@@ -86,24 +111,25 @@
                                     <h5 class="card-title">{{ experience.title }}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">{{ experience.company }}</h6>
                                     {% if experience.location %}
-                                        <p class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{ experience.location }}</p>
+                                    <p class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{
+                                        experience.location }}</p>
                                     {% endif %}
                                     <p class="card-text">{{ experience.description }}</p>
                                     {% if experience.technologies_used.all %}
-                                        <div class="mb-2">
-                                            {% for tech in experience.technologies_used.all %}
-                                                <span class="badge bg-primary me-1">{{ tech.name }}</span>
-                                            {% endfor %}
-                                        </div>
+                                    <div class="mb-2">
+                                        {% for tech in experience.technologies_used.all %}
+                                        <span class="badge bg-primary me-1">{{ tech.name }}</span>
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
                                 <div class="col-md-4 text-md-end">
                                     <p class="text-muted">
-                                        {{ experience.start_date|date:"M Y" }} - 
+                                        {{ experience.start_date|date:"M Y" }} -
                                         {% if experience.current %}
-                                            Present
+                                        Present
                                         {% else %}
-                                            {{ experience.end_date|date:"M Y" }}
+                                        {{ experience.end_date|date:"M Y" }}
                                         {% endif %}
                                     </p>
                                 </div>
@@ -130,20 +156,20 @@
                             <h5 class="card-title">{{ edu.degree }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{ edu.institution }}</h6>
                             {% if edu.location %}
-                                <p class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{ edu.location }}</p>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{ edu.location }}</p>
                             {% endif %}
                             <p class="card-text">{{ edu.description }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-muted">
-                                    {{ edu.start_date|date:"M Y" }} - 
+                                    {{ edu.start_date|date:"M Y" }} -
                                     {% if edu.current %}
-                                        Present
+                                    Present
                                     {% else %}
-                                        {{ edu.end_date|date:"M Y" }}
+                                    {{ edu.end_date|date:"M Y" }}
                                     {% endif %}
                                 </span>
                                 {% if edu.gpa %}
-                                    <span class="badge bg-success">GPA: {{ edu.gpa }}</span>
+                                <span class="badge bg-success">GPA: {{ edu.gpa }}</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -169,17 +195,17 @@
                     <p class="card-text">{{ research.description|truncatewords:40 }}</p>
                     <p class="mb-1"><strong>Authors:</strong> {{ research.authors }}</p>
                     {% if research.publication %}
-                        <p class="mb-1"><strong>Publication:</strong> {{ research.publication }}</p>
+                    <p class="mb-1"><strong>Publication:</strong> {{ research.publication }}</p>
                     {% endif %}
                     {% if research.date %}
-                        <p class="mb-1"><strong>Date:</strong> {{ research.date|date:"M Y" }}</p>
+                    <p class="mb-1"><strong>Date:</strong> {{ research.date|date:"M Y" }}</p>
                     {% endif %}
                 </div>
                 <div class="card-footer bg-transparent">
                     {% if research.link %}
-                        <a href="{{ research.link }}" class="btn btn-outline-info" target="_blank">
-                            View Paper / Project <i class="fas fa-external-link-alt ms-1"></i>
-                        </a>
+                    <a href="{{ research.link }}" class="btn btn-outline-info" target="_blank">
+                        View Paper / Project <i class="fas fa-external-link-alt ms-1"></i>
+                    </a>
                     {% endif %}
                 </div>
             </div>
@@ -209,17 +235,18 @@
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <span class="fw-medium">
                                         {% if skill.icon %}
-                                            <i class="{{ skill.icon }} me-2"></i>
+                                        <i class="{{ skill.icon }} me-2"></i>
                                         {% endif %}
                                         {{ skill.name }}
                                     </span>
                                     <span class="text-muted">{{ skill.proficiency }}/10</span>
                                 </div>
                                 <div class="progress" style="height: 8px;">
-                                    <div class="progress-bar bg-primary" style="width: {{ skill.proficiency|multiply:10 }}%"></div>
+                                    <div class="progress-bar bg-primary"
+                                        style="width: {{ skill.proficiency|multiply:10 }}%;"></div>
                                 </div>
                                 {% if skill.description %}
-                                    <small class="text-muted">{{ skill.description }}</small>
+                                <small class="text-muted">{{ skill.description }}</small>
                                 {% endif %}
                             </div>
                             {% endfor %}
@@ -256,50 +283,50 @@
 
 {% block extra_css %}
 <style>
-.timeline {
-    position: relative;
-}
+    .timeline {
+        position: relative;
+    }
 
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 20px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--primary-color);
-}
-
-.timeline-item {
-    position: relative;
-    padding-left: 50px;
-}
-
-.timeline-item::before {
-    content: '';
-    position: absolute;
-    left: 12px;
-    top: 20px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    border: 3px solid white;
-    box-shadow: 0 0 0 3px var(--primary-color);
-}
-
-@media (max-width: 768px) {
     .timeline::before {
-        left: 15px;
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--primary-color);
     }
-    
+
     .timeline-item {
-        padding-left: 40px;
+        position: relative;
+        padding-left: 50px;
     }
-    
+
     .timeline-item::before {
-        left: 7px;
+        content: '';
+        position: absolute;
+        left: 12px;
+        top: 20px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        border: 3px solid white;
+        box-shadow: 0 0 0 3px var(--primary-color);
     }
-}
+
+    @media (max-width: 768px) {
+        .timeline::before {
+            left: 15px;
+        }
+
+        .timeline-item {
+            padding-left: 40px;
+        }
+
+        .timeline-item::before {
+            left: 7px;
+        }
+    }
 </style>
-{% endblock %} 
+{% endblock %}

@@ -32,6 +32,12 @@ def home(request):
     grouped_skills = {}
     for category, items in groupby(skills, key=attrgetter('category')):
         grouped_skills[category] = list(items)
+    import os
+    avatars_dir = os.path.join('backend', 'media', 'avatars')
+    try:
+        media_avatars = os.listdir(avatars_dir)
+    except Exception:
+        media_avatars = []
     context = {
         'profile': profile,
         'featured_projects': featured_projects,
@@ -39,6 +45,7 @@ def home(request):
         'research_projects': research_projects,
         'skills': skills,
         'grouped_skills': grouped_skills,
+        'media_avatars': media_avatars,
     }
     return render(request, 'portfolio/home.html', context)
 
