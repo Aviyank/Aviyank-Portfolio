@@ -23,6 +23,7 @@ ALLOWED_HOSTS = [
     '.vercel.app',   # Vercel domain
     '.herokuapp.com', # Heroku domain
     '.render.com',   # Render domain
+    '.koyeb.app',    # Koyeb domain
 ]
 
 # Database configuration for production
