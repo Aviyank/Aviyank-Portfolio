@@ -219,14 +219,15 @@ Since you want alternatives to Railway, here are the best **FREE** hosting platf
 
 ## 📊 Comparison Table
 
-| Platform | Free Hours/Month | RAM | Database | Best For |
-|----------|-----------------|-----|----------|----------|
-| **Render** | 750 hours | 512MB | ✅ PostgreSQL | Best overall alternative |
-| **Fly.io** | Unlimited* | Shared | ✅ PostgreSQL | Global edge network |
-| **PythonAnywhere** | 1 CPU hour/day | 512MB | ❌ (use SQLite) | Beginners |
-| **Vercel** | Unlimited | Serverless | ❌ (external) | Static + API |
-| **Koyeb** | Unlimited* | 256MB | ✅ PostgreSQL | Simple deployment |
-| **Cyclic** | Unlimited* | Serverless | ✅ PostgreSQL | Serverless Django |
+| Platform | Free Hours/Month | RAM | Database | Credit Card? | Best For |
+|----------|-----------------|-----|----------|-------------|----------|
+| **Render** | 750 hours | 512MB | ✅ PostgreSQL | ❌ No | **Best overall** |
+| **Railway** | 500 hours | 1GB | ✅ PostgreSQL | ❌ No | Good alternative |
+| **Fly.io** | Unlimited* | Shared | ✅ PostgreSQL | ❌ No | Global edge network |
+| **PythonAnywhere** | 1 CPU hour/day | 512MB | ❌ (use SQLite) | ❌ No | Beginners |
+| **Vercel** | Unlimited* | Serverless | ❌ (external) | ❌ No | Static + API |
+| **Koyeb** | Unlimited* | 512MB | ⚠️ (requires CC) | ⚠️ Yes | Not recommended |
+| **Cyclic** | Unlimited* | Serverless | ✅ PostgreSQL | ❌ No | Serverless Django |
 
 *With usage limits
 
